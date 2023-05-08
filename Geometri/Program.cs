@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
@@ -17,28 +18,47 @@ namespace Geometri
 			double testD = 48;
 			double testAngle = 48;
 
+
+			int amountOfShapes = 1;  // amount of shapes to create in list
+
 			Square square = new Square(testA);
 			parallelogram parallelogram = new parallelogram(testA, testB, testAngle);
 			Rectangle rect  = new Rectangle(testA, testB);
 			Trapeze trapeze = new Trapeze(testA, testB, testC, testD);
 			Triangle triangle = new Triangle(testA, testB, testC);
 
-			Console.WriteLine("Square Perimeter: " + square.Perimeter());
-			Console.WriteLine("Square Area: " + square.Area());
+			//Console.WriteLine("Square Perimeter: " + square.Perimeter());
+			//Console.WriteLine("Square Area: " + square.Area());
 
-			Console.WriteLine("Parallelogram Perimeter: " + parallelogram.Perimeter());
-			Console.WriteLine("Parallelogram Area: " + parallelogram.Area());
+			//Console.WriteLine("Parallelogram Perimeter: " + parallelogram.Perimeter());
+			//Console.WriteLine("Parallelogram Area: " + parallelogram.Area());
 
-			Console.WriteLine("Trapeze Perimeter: " + trapeze.Perimeter());
-			Console.WriteLine("Trapeze Area: " + trapeze.Area());
+			//Console.WriteLine("Trapeze Perimeter: " + trapeze.Perimeter());
+			//Console.WriteLine("Trapeze Area: " + trapeze.Area());
 
-			Console.WriteLine("rect Perimeter: " + rect.Perimeter());
-			Console.WriteLine("rect Area: " + rect.Area());
+			//Console.WriteLine("rect Perimeter: " + rect.Perimeter());
+			//Console.WriteLine("rect Area: " + rect.Area());
 
-			Console.WriteLine("triangle Perimeter: " + triangle.Perimeter());
-			Console.WriteLine("triangle Area: " + triangle.Area());
+			//Console.WriteLine("triangle Perimeter: " + triangle.Perimeter());
+			//Console.WriteLine("triangle Area: " + triangle.Area());
 
 
+			List<Shape> shapes = new List<Shape>();
+
+			for (int i = 0; i < amountOfShapes; i++)
+			{
+				shapes.Add(square);
+				shapes.Add(parallelogram);
+				shapes.Add(rect);
+				shapes.Add(trapeze);
+				shapes.Add(triangle);
+			}
+
+			foreach (Shape item in shapes)
+			{
+                Console.WriteLine(item.Area());
+                Console.WriteLine(item.Perimeter());
+            }
 
 
 
@@ -153,13 +173,13 @@ namespace Geometri
 			c = C;
 			d = D;
 
-
+			GetHeightAndSemiPerimeter();
 		}
 
 		private void GetHeightAndSemiPerimeter()
 		{
-			s = (a + b - c + d) / 2;
-			height = (2 / (a - c)) * (Math.Sqrt(s * (s - a + c) * (s - b) * (s - d)));
+			s = (A + B - C + D) / 2;
+			height = (2 / (A - C)) * (Math.Sqrt(s * (s - A + C) * (s - B) * (s - D)));
 		}
 		public override double Perimeter()
 		{
@@ -167,7 +187,7 @@ namespace Geometri
 		}
 		public override double Area()
 		{
-			return 0.5 * (a + b) * height;
+			return 0.5 * (a + b) * height; 
 		}
 	}
 

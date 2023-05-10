@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,40 +13,24 @@ namespace Geometri
 	{
 		static void Main(string[] args)
 		{
-			double testA = 4.1;
+			double testA = -4.1;
 			double testB = 13;
 			double testC = 0.1;
 			double testD = 48;
 			double testAngle = 48;
 
 
-			int amountOfShapesToCreateInForLoopOnLine48 = 1;  // amount of times the for loop should loop to create lines
+			int amountOfShapesToCreateInForLoopOnLine33 = 1;  // amount of times the for loop should loop to create lines
 
 			Square square = new Square(testA);
 			parallelogram parallelogram = new parallelogram(testA, testB, testAngle);
-			Rectangle rect  = new Rectangle(testA, testB);
+			Rectangle rect = new Rectangle(testA, testB);
 			Trapeze trapeze = new Trapeze(testA, testB, testC, testD);
 			Triangle triangle = new Triangle(testA, testB, testC);
 
-			//Console.WriteLine("Square Perimeter: " + square.Perimeter());
-			//Console.WriteLine("Square Area: " + square.Area());
-
-			//Console.WriteLine("Parallelogram Perimeter: " + parallelogram.Perimeter());
-			//Console.WriteLine("Parallelogram Area: " + parallelogram.Area());
-
-			//Console.WriteLine("Trapeze Perimeter: " + trapeze.Perimeter());
-			//Console.WriteLine("Trapeze Area: " + trapeze.Area());
-
-			//Console.WriteLine("rect Perimeter: " + rect.Perimeter());
-			//Console.WriteLine("rect Area: " + rect.Area());
-
-			//Console.WriteLine("triangle Perimeter: " + triangle.Perimeter());
-			//Console.WriteLine("triangle Area: " + triangle.Area());
-
-
 			List<Shape> shapes = new List<Shape>();
 
-			for (int i = 0; i < amountOfShapesToCreateInForLoopOnLine48; i++)
+			for (int i = 0; i < amountOfShapesToCreateInForLoopOnLine33; i++)
 			{
 				shapes.Add(square);
 				shapes.Add(parallelogram);
@@ -58,9 +43,9 @@ namespace Geometri
 
 			foreach (Shape item in shapes)
 			{
-                Console.WriteLine(item.Area());
-                Console.WriteLine(item.Perimeter());
-            }
+				Console.WriteLine(item.Area());
+				Console.WriteLine(item.Perimeter());
+			}
 
 
 
@@ -70,12 +55,37 @@ namespace Geometri
 
 	public abstract class Shape
 	{
+		private string shapeName;
+
+		public string ShapeName
+		{
+			get { return shapeName; }
+			set { shapeName = value; }
+		}
+
+		// since it makes no sense to have any shape be negative lengths, lets make sure they always are positive. 
 		protected double a;
 
 		protected double A
 		{
 			get { return a; }
-			set { a = value; }
+			set
+			{
+				try // we make sure the length of the given value is positive so we make shapes that actually makes sense, and not some 4th dimensional supertetrahedra type goofy shapes.
+				{
+					if (value > 0) a = value;
+					else
+					{
+						throw new NumberWasNegativeException();   // wanted to try a custom exception 
+					}
+
+				}
+				catch (NumberWasNegativeException)
+				{
+					Console.WriteLine($"Side a was a negative for {GetType()}, converting to positive number");
+					a = -value;
+				}
+			}
 		}
 
 		protected double b;
@@ -83,8 +93,26 @@ namespace Geometri
 		internal double B
 		{
 			get { return b; }
-			set { b = value; }
+			set
+			{
+				try // we make sure the length of the given value is positive so we make shapes that actually makes sense, and not some 4th dimensional supertetrahedra type goofy shapes.
+				{
+					if (value > 0) b = value;
+					else
+					{
+						throw new NumberWasNegativeException();   // wanted to try a custom exception 
+					}
+
+				}
+				catch (NumberWasNegativeException)
+				{
+					Console.WriteLine($"Side b was a negative for {GetType()}, converting to positive number");
+					b = -value;
+				}
+			}
 		}
+
+
 
 
 
@@ -102,19 +130,19 @@ namespace Geometri
 
 		public Shape(double A)
 		{
-			a = A;
+			this.A = A;
 		}
 		public Shape(double A, double B)
 		{
-			a = A;
-			b = B;
+			this.A = A;
+			this.B = B;
 		}
 	}
 	public class Square : Shape
 	{
 		public Square(double A) : base(A)
 		{
-
+			ShapeName = "Square";
 		}
 
 		public override double Perimeter()
@@ -133,7 +161,7 @@ namespace Geometri
 		internal double Angle
 		{
 			get { return angle; }
-			set { angle = value; }
+			set { if (value < 180 && value > 0) angle = value; }
 		}
 		public parallelogram(double A, double B, double Angle) : base(A, B)
 		{
@@ -187,7 +215,7 @@ namespace Geometri
 		}
 		public override double Area()
 		{
-			return 0.5 * (a + b) * height; 
+			return 0.5 * (a + b) * height;
 		}
 	}
 
@@ -211,9 +239,31 @@ namespace Geometri
 	public class Triangle : Shape
 	{
 		private double c;
+
+		public double C
+		{
+			get { return c; }
+			set
+			{
+				try
+				{
+					if (value > 0) c = value;  // we make sure the length of the given value is positive so we make shapes that actually makes sense, and not some 4th dimensional supertetrahedra type goofy shapes.
+					else
+					{
+						throw new NumberWasNegativeException();   // wanted to try a custom exception 
+					}
+
+				}
+				catch (NumberWasNegativeException)
+				{
+					Console.WriteLine($"Side c was a negative {GetType()}, converting to positive number");
+					c = -value;
+				}
+			}
+		}
 		public Triangle(double A, double B, double C) : base(A, B)
 		{
-			c = C;
+			this.c = C;
 		}
 		public override double Perimeter()
 		{

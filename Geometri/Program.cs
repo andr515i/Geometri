@@ -19,7 +19,7 @@ namespace Geometri
 			double testAngle = 48;
 
 
-			int amountOfShapes = 1;  // amount of shapes to create in list
+			int amountOfShapesToCreateInForLoopOnLine48 = 1;  // amount of times the for loop should loop to create lines
 
 			Square square = new Square(testA);
 			parallelogram parallelogram = new parallelogram(testA, testB, testAngle);
@@ -45,7 +45,7 @@ namespace Geometri
 
 			List<Shape> shapes = new List<Shape>();
 
-			for (int i = 0; i < amountOfShapes; i++)
+			for (int i = 0; i < amountOfShapesToCreateInForLoopOnLine48; i++)
 			{
 				shapes.Add(square);
 				shapes.Add(parallelogram);
@@ -53,6 +53,8 @@ namespace Geometri
 				shapes.Add(trapeze);
 				shapes.Add(triangle);
 			}
+
+
 
 			foreach (Shape item in shapes)
 			{
@@ -68,11 +70,9 @@ namespace Geometri
 
 	public abstract class Shape
 	{
-
-
 		protected double a;
 
-		internal double A
+		protected double A
 		{
 			get { return a; }
 			set { a = value; }
@@ -200,11 +200,11 @@ namespace Geometri
 
 		public override double Perimeter()
 		{
-			return 4 * A;
+			return A * A;
 		}
 		public override double Area()
 		{
-			return A * A;
+			return 4 * A;
 		}
 	}
 
